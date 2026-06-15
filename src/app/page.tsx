@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import InventoryTable from '@/components/InventoryTable';
+import QualityModal from '@/components/QualityModal';
 
 // Dynamically import Leaflet Map with SSR disabled since Leaflet requires the client 'window' object
 const DashboardMap = dynamic(() => import('@/components/DashboardMap'), {
@@ -27,6 +28,7 @@ export default function Home() {
   const [batches, setBatches] = useState<Batch[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBatchId, setSelectedBatchId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchBatches() {
@@ -47,8 +49,7 @@ export default function Home() {
 
   const handleSelectBatch = (id: string) => {
     setSelectedBatchId(id);
-    // Temporary alert before we replace it with the detailed NERA biometric modal on Day 6
-    alert(`Selected Batch: ${id}\nOpening NERA Biometric Quality Diagnostics...`);
+    setIsModalOpen(true);
   };
 
   // Calculate statistics
@@ -115,6 +116,13 @@ export default function Home() {
             <InventoryTable batches={batches} onSelectBatch={handleSelectBatch} />
           )}
         </div>
+
+        {/* Diagnostic Modal (NERA View) */}
+        <QualityModal 
+          batchId={selectedBatchId} 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+        />
 
       </div>
     </main>
