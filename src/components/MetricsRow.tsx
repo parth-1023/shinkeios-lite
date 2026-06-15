@@ -44,14 +44,14 @@ export default function MetricsRow({ batches }: Props) {
       value: critical,
       suffix: "",
       footnote: critical ? "Pull from premium lane now" : "No batches under threshold",
-      tone: (critical > 0 ? "bad" : "ok") as const,
+      tone: critical > 0 ? "bad" : "ok",
     },
     {
       label: "Revenue at Risk",
       value: revenueAtRisk,
       money: true,
       footnote: `${formatUsd(wastePreventedUsd)} recoverable via rerouting`,
-      tone: (revenueAtRisk > 0 ? "warn" : "ok") as const,
+      tone: revenueAtRisk > 0 ? "warn" : "ok",
     },
   ] as const;
 
