@@ -35,9 +35,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${inter.variable} ${mono.variable} ${display.variable} h-full antialiased`}
+      className={`${inter.variable} ${mono.variable} ${display.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col shinkei-grain bg-[var(--shinkei-ink)] text-[var(--shinkei-cream)]">
+      <body className="min-h-full flex flex-col bg-[var(--shinkei-cream)] text-[var(--shinkei-text)]">
         {children}
       </body>
     </html>

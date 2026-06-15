@@ -1,6 +1,7 @@
 "use client";
 
 import { Batch } from "@/lib/types";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   batches: Batch[];
@@ -14,8 +15,6 @@ export default function MetricsRow({ batches }: Props) {
   const critical = batches.filter((b) => b.freshnessScore < 40).length;
   const premium = batches.filter((b) => b.recommendation.class === "premium").length;
   const revenueAtRisk = batches.reduce((s, b) => s + (b.revenueAtRisk || 0), 0);
-  // Project a "waste prevented" figure: batches we still have time to reroute
-  // before the sellable threshold.
   const actionable = batches.filter(
     (b) =>
       b.hoursToUnsellable !== null &&
@@ -28,34 +27,38 @@ export default function MetricsRow({ batches }: Props) {
   const cards = [
     {
       label: "Batches in Flight",
-      value: total.toString(),
+      value: total,
+      suffix: "",
       footnote: `${premium} premium · ${critical} critical`,
       tone: "neutral" as const,
     },
     {
       label: "Fleet Avg Freshness",
-      value: `${avgFreshness}%`,
+      value: avgFreshness,
+      suffix: "%",
       footnote: avgFreshness >= 70 ? "Above wholesale threshold" : "Below premium grade",
       tone: avgFreshness >= 80 ? "ok" : avgFreshness >= 40 ? "warn" : "bad",
     },
     {
       label: "Active Spoilage Alerts",
-      value: critical.toString(),
+      value: critical,
+      suffix: "",
       footnote: critical ? "Pull from premium lane now" : "No batches under threshold",
-      tone: critical > 0 ? "bad" : "ok" as const,
+      tone: (critical > 0 ? "bad" : "ok") as const,
     },
     {
       label: "Revenue at Risk",
-      value: usd(revenueAtRisk),
-      footnote: `${usd(wastePreventedUsd)} recoverable via rerouting`,
-      tone: revenueAtRisk > 0 ? "warn" : "ok" as const,
+      value: revenueAtRisk,
+      money: true,
+      footnote: `${formatUsd(wastePreventedUsd)} recoverable via rerouting`,
+      tone: (revenueAtRisk > 0 ? "warn" : "ok") as const,
     },
-  ];
+  ] as const;
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-      {cards.map((c) => (
-        <MetricCard key={c.label} {...c} />
+      {cards.map((c, i) => (
+        <MetricCard key={c.label} {...c} index={i} />
       ))}
     </div>
   );
@@ -64,44 +67,85 @@ export default function MetricsRow({ batches }: Props) {
 function MetricCard({
   label,
   value,
+  suffix,
+  money,
   footnote,
   tone,
+  index,
 }: {
   label: string;
-  value: string;
+  value: number;
+  suffix?: string;
+  money?: boolean;
   footnote: string;
   tone: "ok" | "warn" | "bad" | "neutral";
+  index: number;
 }) {
   const accent =
     tone === "ok"
-      ? "text-emerald-300"
+      ? "text-emerald-700"
       : tone === "warn"
-      ? "text-amber-300"
+      ? "text-amber-700"
       : tone === "bad"
-      ? "text-rose-300"
-      : "text-[var(--shinkei-cream)]";
+      ? "text-rose-700"
+      : "text-[var(--shinkei-text)]";
   const stripe =
     tone === "ok"
-      ? "bg-emerald-400/60"
+      ? "bg-emerald-500"
       : tone === "warn"
-      ? "bg-amber-400/60"
+      ? "bg-amber-500"
       : tone === "bad"
-      ? "bg-rose-400/70"
+      ? "bg-rose-500"
       : "bg-[var(--shinkei-orange)]";
 
+  const display = useCountUp(value);
+
   return (
-    <div className="relative overflow-hidden rounded-xl border border-white/8 bg-[var(--shinkei-ink-2)]/80 p-5">
+    <div
+      className="relative overflow-hidden rounded-xl border border-[var(--shinkei-rule)] shinkei-paper shinkei-card-hover shinkei-rise"
+      style={{ animationDelay: `${index * 70}ms` }}
+    >
       <div className={`absolute left-0 top-0 h-full w-[3px] ${stripe}`} />
-      <div className="shinkei-eyebrow">{label}</div>
-      <div className={`mt-3 text-3xl font-semibold font-mono tracking-tight ${accent}`}>
-        {value}
+      <div className="p-5">
+        <div className="shinkei-eyebrow">{label}</div>
+        <div className={`mt-3 text-[34px] font-mono font-semibold tracking-tight tabular-nums ${accent}`}>
+          {money ? formatUsd(display) : `${display}${suffix ?? ""}`}
+        </div>
+        <div className="mt-2 text-[11px] text-[var(--shinkei-text-mute)]">{footnote}</div>
       </div>
-      <div className="mt-2 text-[11px] text-[var(--shinkei-cream-mute)]">{footnote}</div>
     </div>
   );
 }
 
-function usd(n: number): string {
+function useCountUp(target: number, duration = 800): number {
+  const [value, setValue] = useState(0);
+  const startRef = useRef<number | null>(null);
+  const fromRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    fromRef.current = value;
+    startRef.current = null;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const tick = (t: number) => {
+      if (startRef.current === null) startRef.current = t;
+      const p = Math.min(1, (t - startRef.current) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const next = Math.round(fromRef.current + (target - fromRef.current) * eased);
+      setValue(next);
+      if (p < 1) rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target]);
+
+  return value;
+}
+
+function formatUsd(n: number): string {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(2)}M`;
   if (n >= 1_000) return `$${(n / 1_000).toFixed(1)}K`;
   return `$${n}`;

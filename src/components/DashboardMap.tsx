@@ -1,6 +1,6 @@
 "use client";
 
-import { MapContainer, TileLayer, CircleMarker, Popup, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer, CircleMarker, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Batch } from "@/lib/types";
 
@@ -10,10 +10,10 @@ interface DashboardMapProps {
 }
 
 const ROUTING_COLOR: Record<string, string> = {
-    premium: "#ff7a1f",
-    standard: "#6db6c9",
-    process: "#f5b243",
-    reject: "#f56565",
+    premium: "#ff6b1a",
+    standard: "#3a89bf",
+    process: "#e89c2c",
+    reject: "#c33b2a",
 };
 
 export default function DashboardMap({ batches, onSelectBatch }: DashboardMapProps) {
@@ -36,8 +36,8 @@ export default function DashboardMap({ batches, onSelectBatch }: DashboardMapPro
                     url="https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png"
                 />
                 {batches.map((batch) => {
-                    const color = ROUTING_COLOR[batch.recommendation.class] ?? "#ff7a1f";
-                    const radius = 6 + (100 - batch.freshnessScore) * 0.12;
+                    const color = ROUTING_COLOR[batch.recommendation.class] ?? "#ff6b1a";
+                    const radius = 7 + (100 - batch.freshnessScore) * 0.14;
                     return (
                         <CircleMarker
                             key={batch.id}
@@ -46,54 +46,71 @@ export default function DashboardMap({ batches, onSelectBatch }: DashboardMapPro
                             pathOptions={{
                                 color,
                                 fillColor: color,
-                                fillOpacity: 0.45,
-                                weight: 1.5,
+                                fillOpacity: 0.55,
+                                weight: 2,
                             }}
                             eventHandlers={{ click: () => onSelectBatch(batch.id) }}
                         >
-                            <Tooltip direction="top" offset={[0, -8]} className="!bg-transparent">
-                                <span className="text-[11px] font-mono">
-                                    {batch.species} · {batch.freshnessScore}%
-                                </span>
-                            </Tooltip>
-                            <Popup>
-                                <div className="text-xs space-y-1.5 min-w-[180px]">
-                                    <div className="flex items-center justify-between">
-                                        <strong className="text-[13px]">{batch.species}</strong>
+                            <Tooltip
+                                direction="top"
+                                offset={[0, -10]}
+                                opacity={1}
+                                className="shinkei-tip"
+                            >
+                                <div style={{ minWidth: 200 }}>
+                                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                                        <strong style={{ fontSize: 13, color: "#f3eee5" }}>
+                                            {batch.species}
+                                        </strong>
                                         <span
-                                            className="text-[10px] font-mono uppercase tracking-widest"
-                                            style={{ color }}
+                                            style={{
+                                                fontFamily: "var(--font-mono)",
+                                                fontSize: 9,
+                                                letterSpacing: "0.16em",
+                                                textTransform: "uppercase",
+                                                color,
+                                            }}
                                         >
                                             {batch.recommendation.label}
                                         </span>
                                     </div>
-                                    <div className="opacity-70">ID {batch.id.slice(0, 8)}</div>
-                                    <div className="flex justify-between gap-4">
-                                        <span className="opacity-70">Freshness</span>
-                                        <span className="font-mono">{batch.freshnessScore}%</span>
+                                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, opacity: 0.75, marginTop: 2, color: "#d8cdb5" }}>
+                                        {batch.id.slice(0, 8)} · {batch.currentLocation ?? "at sea"}
                                     </div>
-                                    <div className="flex justify-between gap-4">
-                                        <span className="opacity-70">Unsellable in</span>
-                                        <span className="font-mono">
-                                            {batch.hoursToUnsellable !== null
-                                                ? `${batch.hoursToUnsellable}h`
-                                                : "—"}
+                                    <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginTop: 6, fontSize: 11, color: "#f3eee5" }}>
+                                        <span style={{ color: "#d8cdb5" }}>Freshness</span>
+                                        <span style={{ fontFamily: "var(--font-mono)" }}>{batch.freshnessScore}%</span>
+                                    </div>
+                                    <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginTop: 2, fontSize: 11, color: "#f3eee5" }}>
+                                        <span style={{ color: "#d8cdb5" }}>Unsellable in</span>
+                                        <span style={{ fontFamily: "var(--font-mono)" }}>
+                                            {batch.hoursToUnsellable !== null ? `${batch.hoursToUnsellable}h` : "stable"}
                                         </span>
                                     </div>
-                                    <button
-                                        onClick={() => onSelectBatch(batch.id)}
-                                        className="mt-2 w-full bg-[#ff7a1f] hover:bg-[#ff8b3a] text-black text-[11px] py-1.5 px-3 rounded font-semibold transition-colors uppercase tracking-wider"
+                                    <div
+                                        style={{
+                                            marginTop: 8,
+                                            background: "#ff6b1a",
+                                            color: "#14110f",
+                                            fontSize: 10,
+                                            fontWeight: 700,
+                                            letterSpacing: "0.16em",
+                                            textTransform: "uppercase",
+                                            padding: "6px 10px",
+                                            borderRadius: 6,
+                                            textAlign: "center",
+                                        }}
                                     >
-                                        Open NERA Diagnostics
-                                    </button>
+                                        Click marker → Open NERA
+                                    </div>
                                 </div>
-                            </Popup>
+                            </Tooltip>
                         </CircleMarker>
                     );
                 })}
             </MapContainer>
 
-            <div className="absolute left-3 bottom-3 z-[400] flex gap-3 rounded-md border border-white/10 bg-black/60 backdrop-blur px-3 py-2 text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--shinkei-cream-mute)]">
+            <div className="absolute left-3 bottom-3 z-[400] flex gap-3 rounded-md border border-white/10 bg-black/60 backdrop-blur px-3 py-2 text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--shinkei-cream-deep)]">
                 {Object.entries(ROUTING_COLOR).map(([k, c]) => (
                     <span key={k} className="flex items-center gap-1.5">
                         <span className="h-2 w-2 rounded-full" style={{ background: c }} />

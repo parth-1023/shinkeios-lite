@@ -6,8 +6,8 @@
 
 /* ---------------------------------------------------------------
    ShinkeiOS Lite design tokens
-   Mirrors shinkei.systems: deep near-black ground, warm cream
-   text, signature Shinkei orange. Industrial. Editorial.
+   Mirrors shinkei.systems: warm cream surfaces, deep ink type,
+   signature Shinkei orange, halftone/pixel imagery.
    --------------------------------------------------------------- */
 
 @theme inline {
@@ -53,35 +53,35 @@
 }
 
 :root {
-  /* Light theme is unused but kept sane */
-  --background: oklch(0.99 0.005 80);
-  --foreground: oklch(0.18 0.01 60);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.01 60);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.01 60);
-  --primary: oklch(0.7 0.2 45);
+  /* LIGHT (default) — matches shinkei.systems cream surfaces */
+  --background: oklch(0.96 0.01 80);
+  --foreground: oklch(0.15 0.01 60);
+  --card: oklch(0.99 0.005 80);
+  --card-foreground: oklch(0.15 0.01 60);
+  --popover: oklch(0.99 0.005 80);
+  --popover-foreground: oklch(0.15 0.01 60);
+  --primary: oklch(0.74 0.2 45);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.96 0.01 80);
+  --secondary: oklch(0.93 0.02 75);
   --secondary-foreground: oklch(0.18 0.01 60);
-  --muted: oklch(0.96 0.01 80);
-  --muted-foreground: oklch(0.5 0.02 70);
-  --accent: oklch(0.96 0.01 80);
+  --muted: oklch(0.93 0.02 75);
+  --muted-foreground: oklch(0.45 0.02 65);
+  --accent: oklch(0.93 0.02 75);
   --accent-foreground: oklch(0.18 0.01 60);
   --destructive: oklch(0.6 0.25 25);
-  --border: oklch(0.9 0.01 70);
-  --input: oklch(0.9 0.01 70);
-  --ring: oklch(0.7 0.2 45);
+  --border: oklch(0.85 0.02 65);
+  --input: oklch(0.85 0.02 65);
+  --ring: oklch(0.74 0.2 45);
   --radius: 0.5rem;
 
-  --sidebar: oklch(0.985 0 0);
+  --sidebar: oklch(0.97 0.01 80);
   --sidebar-foreground: oklch(0.18 0.01 60);
-  --sidebar-primary: oklch(0.7 0.2 45);
+  --sidebar-primary: oklch(0.74 0.2 45);
   --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.96 0.01 80);
+  --sidebar-accent: oklch(0.93 0.02 75);
   --sidebar-accent-foreground: oklch(0.18 0.01 60);
-  --sidebar-border: oklch(0.9 0.01 70);
-  --sidebar-ring: oklch(0.7 0.2 45);
+  --sidebar-border: oklch(0.85 0.02 65);
+  --sidebar-ring: oklch(0.74 0.2 45);
 
   --chart-1: oklch(0.74 0.2 45);
   --chart-2: oklch(0.58 0.16 30);
@@ -89,20 +89,26 @@
   --chart-4: oklch(0.7 0.12 180);
   --chart-5: oklch(0.4 0.05 240);
 
-  /* Brand */
-  --shinkei-orange: #ff7a1f;
+  /* Brand tokens — used directly across the app */
+  --shinkei-orange: #ff6b1a;
   --shinkei-orange-soft: #ffb37a;
-  --shinkei-ember: #ff4d1f;
-  --shinkei-ink: #0b0d10;
-  --shinkei-ink-2: #14181f;
-  --shinkei-ink-3: #1a1f28;
+  --shinkei-ember: #e8421a;
+  --shinkei-ocean: #3a89bf;
+  --shinkei-ocean-soft: #9dc7e0;
+  --shinkei-ink: #14110f;
+  --shinkei-ink-2: #1c1916;
+  --shinkei-ink-3: #2a2622;
   --shinkei-cream: #f3eee5;
-  --shinkei-cream-mute: #b9b1a1;
-  --shinkei-ocean: #6db6c9;
+  --shinkei-cream-warm: #ece4d3;
+  --shinkei-cream-deep: #e0d6c0;
+  --shinkei-paper: #faf6ec;
+  --shinkei-text: #1c1612;
+  --shinkei-text-mute: #6a605a;
+  --shinkei-rule: #d8cdb5;
 }
 
 .dark {
-  --background: oklch(0.13 0.005 250);
+  --background: oklch(0.12 0.005 250);
   --foreground: oklch(0.96 0.01 80);
   --card: oklch(0.17 0.01 250);
   --card-foreground: oklch(0.96 0.01 80);
@@ -120,21 +126,6 @@
   --border: oklch(1 0 0 / 8%);
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.74 0.2 45);
-
-  --chart-1: oklch(0.74 0.2 45);
-  --chart-2: oklch(0.58 0.16 30);
-  --chart-3: oklch(0.6 0.1 220);
-  --chart-4: oklch(0.7 0.12 180);
-  --chart-5: oklch(0.4 0.05 240);
-
-  --sidebar: oklch(0.11 0.005 250);
-  --sidebar-foreground: oklch(0.85 0.01 80);
-  --sidebar-primary: oklch(0.74 0.2 45);
-  --sidebar-primary-foreground: oklch(0.13 0.005 250);
-  --sidebar-accent: oklch(0.18 0.01 250);
-  --sidebar-accent-foreground: oklch(0.96 0.01 80);
-  --sidebar-border: oklch(1 0 0 / 6%);
-  --sidebar-ring: oklch(0.74 0.2 45);
 }
 
 @layer base {
@@ -142,25 +133,13 @@
     @apply border-border outline-ring/50;
   }
   html, body {
-    background: var(--shinkei-ink);
-    color: var(--shinkei-cream);
+    background: var(--shinkei-cream);
+    color: var(--shinkei-text);
     font-feature-settings: "ss01", "cv11";
   }
   html {
     @apply font-sans;
   }
-}
-
-/* Subtle film grain on the page background */
-.shinkei-grain::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 3px 3px;
-  z-index: 0;
-  opacity: 0.6;
 }
 
 /* Editorial cap heading like the Shinkei homepage */
@@ -169,40 +148,127 @@
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--shinkei-cream-mute);
+  color: var(--shinkei-text-mute);
 }
 
-/* Brand display font use */
 .shinkei-display {
   font-family: var(--font-heading);
-  letter-spacing: -0.02em;
-  line-height: 0.96;
+  letter-spacing: -0.025em;
+  line-height: 0.94;
+  font-style: italic;
 }
 
-/* Leaflet skin overrides */
+/* ---------------- Halftone / pixel pattern utilities -----------
+   The orange-on-cream halftone is Shinkei's signature texture.
+   These utilities print a regular dot grid as a layered background.
+   ---------------------------------------------------------------- */
+.shinkei-halftone {
+  background-image: radial-gradient(rgba(20, 17, 15, 0.18) 1px, transparent 1.5px);
+  background-size: 6px 6px;
+}
+.shinkei-halftone-orange {
+  background-image: radial-gradient(rgba(255, 107, 26, 0.55) 1px, transparent 1.5px);
+  background-size: 5px 5px;
+}
+.shinkei-halftone-soft {
+  background-image: radial-gradient(rgba(20, 17, 15, 0.08) 1px, transparent 1.5px);
+  background-size: 4px 4px;
+}
+
+/* Paper texture lift for cream surfaces */
+.shinkei-paper {
+  background-color: var(--shinkei-paper);
+  background-image:
+    radial-gradient(rgba(20, 17, 15, 0.025) 1px, transparent 1.5px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent 40%);
+  background-size: 3px 3px, 100% 100%;
+}
+
+/* ---------------- Leaflet skin ---------------------------------- */
 .leaflet-container {
-  background: #0b0d10 !important;
+  background: #14110f !important;
   font-family: var(--font-sans) !important;
 }
-.leaflet-popup-content-wrapper,
-.leaflet-popup-tip {
-  background: #14181f !important;
+.leaflet-popup-content-wrapper {
+  background: #14110f !important;
   color: #f3eee5 !important;
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4) !important;
+  border: 1px solid rgba(243, 238, 229, 0.12) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45) !important;
   border-radius: 10px !important;
+  padding: 4px !important;
 }
-.leaflet-popup-content { margin: 12px 14px !important; }
+.leaflet-popup-tip { background: #14110f !important; }
+.leaflet-popup-content { margin: 12px 14px !important; min-width: 220px; }
 .leaflet-control-attribution {
-  background: rgba(0,0,0,0.5) !important;
-  color: #b9b1a1 !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: #d8cdb5 !important;
 }
-.leaflet-control-attribution a { color: #ff7a1f !important; }
+.leaflet-control-attribution a { color: #ff6b1a !important; }
 
-.shinkei-pulse {
-  animation: shinkei-pulse 2.4s ease-in-out infinite;
+/* Override the small white-bordered floating tooltip Leaflet ships with */
+.leaflet-tooltip.shinkei-tip {
+  background: #14110f !important;
+  color: #f3eee5 !important;
+  border: 1px solid rgba(255, 107, 26, 0.55) !important;
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.5) !important;
+  border-radius: 8px !important;
+  padding: 8px 10px !important;
+  font-family: var(--font-sans) !important;
+  font-size: 11px !important;
+  font-weight: 500;
 }
+.leaflet-tooltip.shinkei-tip::before { border-top-color: rgba(255, 107, 26, 0.55) !important; }
+
+/* ---------------- Motion --------------------------------------- */
 @keyframes shinkei-pulse {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.4); }
+}
+.shinkei-pulse { animation: shinkei-pulse 2.4s ease-in-out infinite; }
+
+@keyframes shinkei-ping {
+  0%   { transform: scale(0.6); opacity: 0.7; }
+  100% { transform: scale(2.3); opacity: 0; }
+}
+.shinkei-ping {
+  animation: shinkei-ping 2s cubic-bezier(0.2, 0.7, 0.4, 1) infinite;
+}
+
+@keyframes shinkei-rise {
+  0%   { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.shinkei-rise {
+  animation: shinkei-rise 600ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes shinkei-drift {
+  0%   { transform: translate3d(0, 0, 0) rotate(0); }
+  50%  { transform: translate3d(2%, -1%, 0) rotate(0.5deg); }
+  100% { transform: translate3d(0, 0, 0) rotate(0); }
+}
+.shinkei-drift { animation: shinkei-drift 18s ease-in-out infinite; }
+
+@keyframes shinkei-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shinkei-shimmer {
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 107, 26, 0.18) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shinkei-shimmer 2.4s linear infinite;
+}
+
+.shinkei-card-hover {
+  transition: transform 240ms cubic-bezier(0.2, 0.7, 0.3, 1),
+              box-shadow 240ms ease;
+}
+.shinkei-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -18px rgba(20, 17, 15, 0.35);
 }
