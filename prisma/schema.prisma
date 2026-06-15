@@ -1,0 +1,35 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Batch {
+  id                 String              @id @default(uuid())
+  species            String
+  originLat          Float
+  originLng          Float
+  catchTime          DateTime            @default(now())
+  traceabilityEvents TraceabilityEvent[]
+  sensorReadings     SensorReading[]
+}
+
+model TraceabilityEvent {
+  id        String   @id @default(uuid())
+  batchId   String
+  batch     Batch    @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  eventTime DateTime @default(now())
+  bizStep   String   // e.g., "harvesting", "transporting", "receiving", "processing"
+  location  String
+}
+
+model SensorReading {
+  id          String   @id @default(uuid())
+  batchId     String
+  batch       Batch    @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  recordedAt  DateTime @default(now())
+  mq135Value  Float    // Ammonia gas readings
+}
