@@ -2,6 +2,8 @@
 
 > *Artisanal quality at industrial scale.*
 
+**[Live Demo](https://shinkeios-lite-gamma.vercel.app/)**
+
 ShinkeiOS Lite is a dispatch-grade operations dashboard simulating the internal software of [Shinkei Systems](https://shinkei.systems/). It tracks seafood batches from harvest to plate, projects their remaining shelf life from biometric sensor telemetry, and recommends the right sales lane for each batch before the quality curve catches up.
 
 The app combines two engines:
